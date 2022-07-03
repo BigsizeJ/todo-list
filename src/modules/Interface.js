@@ -1,30 +1,67 @@
-import {Task} from './Task'
+import image from '../img/add.svg'
 
+export const Interface = (() => {
+    const Append = (element) => {
+        const container = document.querySelector('.container')
 
-const TaskTitle = (title) => {
-    const content = document.querySelector('.content')
-    const h1 = document.createElement('h1')
-    content.textContent = ''
-    h1.className = 'taskTitle'
-    h1.textContent = title
-    content.appendChild(h1)
-}
+        container.appendChild(element)
+    }
 
-const DisplayTask = () => {
-    const content = document.querySelector('.content')
-    content.appendChild(Task())
+    const Header = () => {
+        const parent = document.createElement('div')
+        parent.className = 'header'
+     
+        Append(parent)
+    }
 
-    return content
-}
+    const Sidebar = () => {
+        const parent = document.createElement('div')
+        parent.className = 'sidebar'
+        Append(parent)
+    }
 
-const ShowModal = () => {
-    const modal = document.querySelector('.modal')
-    const modalBtn = document.querySelector('.modalbtn')
-    Array.from(modalBtn).forEach((button) => {
-        button.classList.remove('active')
-    })
-    modal.classList.toggle('show')
-}
+    const Content = () => {
+        const parent = document.createElement('div')
+        parent.className = 'content'
+        Append(parent)
+    }
 
+    const AddTask = () => {
+        const button = document.createElement('button')
+        const labelImg = document.createElement('img')
+        labelImg.src = image
+        button.appendChild(labelImg)
+        button.className = 'addbtn'
+        Append(button)
+    }
 
-export {TaskTitle, DisplayTask, ShowModal}
+    const Modal = () => {
+        const modal = document.createElement('div')
+        modal.className = 'modal'
+        
+        const modalContent = document.createElement('div')
+        modalContent.className = 'modalContent'
+
+        const modalHeader = document.createElement('div')
+        modalHeader.className = 'modalHeader'
+
+        const modalSidebar = document.createElement('div')
+        modalSidebar.className = 'modalSidebar'
+
+        modal.appendChild(modalHeader)
+        modal.appendChild(modalSidebar)
+        modal.appendChild(modalContent)
+        Append(modal)
+        
+    }
+
+    const LOAD = () => {
+        Header()
+        Sidebar()
+        Content()
+        AddTask()
+        Modal()
+    }
+
+    LOAD()
+})()
