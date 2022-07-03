@@ -1,5 +1,6 @@
 import {Task} from './Task'
 
+
 const TaskTitle = (title) => {
     const content = document.querySelector('.content')
     const h1 = document.createElement('h1')
@@ -16,5 +17,14 @@ const DisplayTask = () => {
     return content
 }
 
+const ShowModal = () => {
+    const modal = document.querySelector('.modal')
+    const modalBtn = document.querySelector('.modalbtn')
+    Array.from(modalBtn).forEach((button) => {
+        button.classList.remove('active')
+    })
+    modal.classList.toggle('show')
+}
 
-export {TaskTitle, DisplayTask}
+
+export {TaskTitle, DisplayTask, ShowModal}
