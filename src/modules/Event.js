@@ -36,6 +36,18 @@ const EventHandler = () => {
         })
     }
 
+    const modalSidebarEvent = () => {
+        const task = document.querySelector('.taskbtn')
+        task.addEventListener('click', () => {
+            activeButton(task, 'modalbtn')
+        })
+
+        const project = document.querySelector('.projectbtn')
+        project.addEventListener('click', () => {
+            activeButton(project, 'modalbtn')
+        })
+    }
+
     const Add = () => {
         const modal = document.querySelector('.modal')
         const addbtn = document.querySelector('.addbtn')
@@ -50,7 +62,7 @@ const EventHandler = () => {
         contentTitle('Home')
     }
 
-    return { sideBarEvent, homepage, Add }
+    return { sideBarEvent, modalSidebarEvent, homepage, Add }
 
 }
 
