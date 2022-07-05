@@ -84,12 +84,15 @@ export const Interface = (() => {
         const modalContent = document.createElement('div')
         modalContent.className = 'modalContent'
 
+
+
         modalBox.appendChild(modalContent)
         modalBox.appendChild(modalHeader)
         modalBox.appendChild(modalSidebar)
         modal.appendChild(modalBox)
         Append(modal)
     }
+
 
     const LOAD = () => {
         Header()
