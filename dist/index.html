@@ -4,10 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
-<script defer src="bundle.js"></script></head>
+    <title>Document</title>
+    <script src='bundle.js' defer></script>
+    <link rel="stylesheet" href="./styles/style.css"
+</head>
 <body>
     <div class="container">
+        <div class="header">
+            <h1 class="headerTitle">To Do</h1>
+        </div>
+        <div class="sidebar">
+            <button class="home btn">Home</button>
+            <button class="today btn">Today</button>
+            <button class="week btn">This week</button>
+            <p class="projectLabel">Project</p>
+        </div>
+        <div class="content"></div>
+        <div class="modal">
+            <div class="modalBox">
+                <div class="modalHeader">
+                    <h1 class="modalTitle">Create a new...</h1>
+                    <button class="modalClose"><img src="./img/add.svg" alt=""></button>
+                </div>
+                <div class="modalSidebar">
+                    <button class="taskbtn modalbtn">Task</button>
+                    <button class="projbtn modalbtn">Project</button>
+                </div>
+                <div class="modalContent"></div>
+            </div>
+        </div>
+        <button class="addbtn"><img src="./img/add.svg" alt=""></button>
     </div>
 </body>
 </html>

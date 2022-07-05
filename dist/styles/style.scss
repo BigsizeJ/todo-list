@@ -6,7 +6,7 @@ $activeBackground: rgba(148, 148, 148, .4);
 
 @font-face {
     font-family: Poppins;
-    src: url('./fonts/Poppins.ttf');
+    src: url('../fonts/Poppins.ttf');
 }
 
 *, *::before, *::after{
@@ -109,8 +109,7 @@ body {
         width: 100%;
         height: 100%;
         display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: repeat(auto-fit, auto);
+        grid-template-rows: min-content auto;
         padding: 20px 50px;
         h1 {
             font-size: 1.70rem;
@@ -127,6 +126,7 @@ body {
         justify-content: center;
         background: rgba(0, 0, 0, .3);
         padding: 50px;
+        z-index: 99;
         .modalBox {
             display: grid;
             box-shadow: 0px 2px 10px $fontColor;
@@ -137,19 +137,37 @@ body {
             max-height: 400px;
          
             grid-template-columns: 1fr 3fr;
-            grid-template-rows: 1fr 5fr;
+            grid-template-rows: min-content 1fr;
             .modalHeader {
                 grid-row: 1;
                 grid-column: 1/-1;
                 background: $HeaderColor;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 padding: 10px;
                 .modalTitle {
                     padding: 0;
                     margin: 0;
                     color: $PrimaryColor;
                     font-size: 1.5rem;
+                }
+                .modalClose {
+                    border: none;
+                    outline: none;
+                    display: flex;
+                    align-items: center;
+                    border-radius: 100%;
+                    padding: 0;
+                    background: none;
+                    transform: rotate(225deg);
+                    img {
+                        width: 40px;
+                        filter: invert(100%) sepia(28%) saturate(447%) hue-rotate(152deg) brightness(113%) contrast(99%);
+                    }
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
             .modalSidebar {
@@ -163,53 +181,84 @@ body {
             }
         }
     }
-    .modaltaskform {
-        display: flex;
-        flex-direction: column;
+
+    .Form {
+        height: 100%;
         padding: 10px;
         gap: 10px;
-        input {
-            padding: 5px;
-            background: $PrimaryColor;
-            border: 1px solid white;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        .taskTitle, .taskDescript {
+            border: none;
             font-family: Poppins, sans-serif;
-        }
-        textarea {
             padding: 5px;
-            background: $PrimaryColor;
-            border: 1px solid white;
-            height: 140px;
-            resize: none;
+            background-color: $PrimaryColor;
+            font-size: 13px;
+            &:focus {
+                outline: 1px solid $fontColor;
+            }
         }
+        .taskDescript {
+            resize: none;
+            height: 50%;
 
-        label {
+        }
+        .dateLabel {
             display: flex;
             gap: 10px;
-        }
-        .duedate{
-            padding: 2px;
-            text-align: center;
-            width: 150px;
-        }
-        
-        .priorHolder {
-            display: flex;
-    
-            .lowBox {
+            .taskDue {
+                display: flex;
                 padding: 0px 5px;
-                background-color: greenyellow;
-                .lowPrior {
-                    display: none;
-                    
-                }
-                .lowPrior:checked + .lowBox{
-                    background-color: red;
-                }
-                
+                border: none;
+                background-color: $PrimaryColor;
             }
-            
-            
-            
+        }
+        .priorDiv {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            p {
+                margin: 0;
+                padding: 0;
+            }
+            .low, .medium, .high {
+                display: flex;
+                align-items: center;
+                padding: 0px 10px;
+                font-family: Poppins, sans-serif;
+                border: 2px solid dodgerblue;
+                color: $fontColor;
+                font-weight: 700;
+                font-size: .9rem;
+                &:hover {
+                    cursor: pointer;
+                    background: $HeaderColor;
+                    color: $PrimaryColor
+                }
+            }
+            input[type=radio]{
+                transform: scale(0);
+                position: absolute
+            }
+            .priorActive {
+                color: $PrimaryColor;
+                background: dodgerblue;
+            }
+        }
+        .submitBtn {
+            display: flex;
+            align-items: center;
+            border: none;
+            font-family: Poppins, sans-serif;
+            padding: 5px;
+            font-weight: 700;
+            background-color: dodgerblue;
+            color: $PrimaryColor;
+            &:hover {
+                cursor: pointer;
+                background-color: rgba(30, 144, 255, .8);
+            }
         }
     }
 
@@ -227,12 +276,27 @@ body {
         }
         .modal{
             padding: 10px;
-            .modalContent{
-
-                .modaltaskform {
-                    padding: 2px;
+            .modalBox {
+                .modalHeader {
+                    .modalTitle {
+                        font-size: 1.2rem;
+                    }
+                    .modalClose {
+                        img {
+                            width: 35px;
+                        }
+                    }
+                }
+                .modalSidebar {
+                    .modalbtn {
+                        font-size: 1.1rem;
+                    }
                 }
             }
+        }
+
+        .Form {
+
         }
     }
 }

@@ -1,2 +1,1 @@
-import './style.scss'
-import './modules/App'
+import './modules/Event'
