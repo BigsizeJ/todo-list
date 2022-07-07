@@ -8,6 +8,10 @@ $activeBackground: rgba(148, 148, 148, .4);
     font-family: Poppins;
     src: url('../fonts/Poppins.ttf');
 }
+@font-face {
+    font-family: PoppinsBold;
+    src: url('../fonts/Poppins-Bold.ttf');
+}
 
 *, *::before, *::after{
     box-sizing: border-box;
@@ -27,7 +31,7 @@ body {
 }
 
 .container {
-    overflow: auto;
+    transition: .5s ease;
     position: relative;
     width: 100%;
     height: 100%;
@@ -36,15 +40,34 @@ body {
     grid-template-columns: 1fr 4fr;
 
     .header {
+        width: 100%;
         grid-column: 1/-1;
         background: $HeaderColor;
         display: flex;
         align-items: center;
-        padding: 10px;
+        justify-content: space-between;
         .headerTitle {
+            padding: 10px;
             color: $PrimaryColor;
-            font-weight: 700;
+            font-family: PoppinsBold, sans-serif;
         }
+        .toggle-menu {
+            margin-right: 10px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 45px;
+            height: 30px;
+            position: relative;
+            .bar{
+                width: 100%;
+                background-color: $PrimaryColor;
+                height: 5px;
+                border-radius: 10px;
+            }
+        }
+    
     }
 
     .sidebar {
@@ -58,8 +81,44 @@ body {
             margin: 0;
             font-size: 1.50rem;
             padding: 5px;
+            font-family: PoppinsBold;
         }
-        
+    }
+
+    .sidebar.showMenu {
+        display: flex;
+        position: absolute;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        .btn {
+            font-size: 1.20rem;
+        }
+        .projectLabel {
+            font-size: 1.30rem;
+            font-family: PoppinsBold, sans-serif;
+            font-weight: 700;
+        }
+    }
+
+    .change {
+        .bar {
+            bottom: 0;
+            top: 0;
+            margin: auto;
+            position: absolute;
+        }
+        .hide {
+            display: none;
+        }
+        .rotate {
+            transition: .5s ease;
+            transform: rotate(-45deg);
+        }
+        .rotate2 {
+            transition: .5s ease;
+            transform: rotate(45deg);
+        }
     }
 
     .btn, .modalbtn {
@@ -111,21 +170,41 @@ body {
         display: grid;
         grid-template-rows: min-content auto;
         padding: 20px 50px;
+        gap: 20px;
         h1 {
-            font-size: 1.70rem;
-            font-weight: 700;
+            font-size: 1.50rem;
+            font-family: PoppinsBold;
+        }
+        .TaskGrid {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: auto;
+            grid-template-rows: repeat(auto-fill, 35px);
+            div {
+                font-family: Poppins, sans-serif;
+                gap: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 5px;
+                background: $PrimaryColor;
+                border: 1px solid $HeaderColor;
+                border-left: 5px inset rgb(72, 95, 73);
+                width: 100%;
+            }
         }
     }
 
     .modal {
         width: 100%;
         height: 100%;
-        position: absolute;
+        position: fixed;
         display: none;
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, .3);
-        padding: 50px;
         z-index: 99;
         .modalBox {
             display: grid;
@@ -239,7 +318,7 @@ body {
             }
             input[type=radio]{
                 transform: scale(0);
-                position: absolute
+                position: absolute;
             }
             .priorActive {
                 color: $PrimaryColor;
@@ -247,8 +326,8 @@ body {
             }
         }
         .submitBtn {
-            display: flex;
-            align-items: center;
+            margin-top: 5px;
+            text-align: center;
             border: none;
             font-family: Poppins, sans-serif;
             padding: 5px;
@@ -271,8 +350,23 @@ body {
 
 @media screen and (max-width: 800px) {
     .container {
+        .header {
+            padding: 0;
+            .toggle-menu {
+                display: flex;
+            }
+        }
         .sidebar {
             display: none;
+        }
+        .content {
+            gap: 10px;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            .TaskGrid {
+                height: 100%;
+            }
         }
         .modal{
             padding: 10px;
@@ -292,11 +386,10 @@ body {
                         font-size: 1.1rem;
                     }
                 }
+                .Form {
+                    padding: 5px;
+                }
             }
-        }
-
-        .Form {
-
         }
     }
 }

@@ -1,124 +1,162 @@
-import Interface from "./Interface"
+import Interface from './Interface';
+import Storage from './Storage';
 
 const Event = (() => {
+  const {
+    Home, Today, Thisweek, Task,
+  } = Interface();
+  const { set, get } = Storage();
 
-    const {Home, Today, Thisweek, Task} = Interface()
+  const loadTask = (key) => {
+    const tasks = get(key);
+    const TaskGrid = document.querySelector('.TaskGrid');
 
-    const activeButton = (element, className) => {
-        if(element.classList.contains('active')) return
-        const buttons = document.querySelectorAll(`.${className}`)
-        Array.from(buttons).forEach((button) => {
-            button.classList.remove('active')
-        })
-        element.classList.add('active')
-    }
+    Array.from(tasks).forEach((task) => {
+      const div = document.createElement('div');
+      const title = document.createElement('p');
+      title.textContent = task.title;
+      const date = document.createElement('p');
+      date.textContent = task.dueDate;
+      div.appendChild(title);
+      div.appendChild(date);
 
-    const sideBarButton = () => {
-        const homebtn = document.querySelector('.home')
-         homebtn.addEventListener('click', () => {
-            activeButton(homebtn, 'btn')
-            Home()
-         })
+      TaskGrid.append(div);
+    });
+  };
 
-         const todaybtn = document.querySelector('.today')
-         todaybtn.addEventListener('click', () => {
-            activeButton(todaybtn, 'btn')
-            Today()
-            
-         })
+  const activeButton = (element, className) => {
+    if (element.classList.contains('active')) return;
+    const buttons = document.querySelectorAll(`.${className}`);
+    Array.from(buttons).forEach((button) => {
+      button.classList.remove('active');
+    });
+    element.classList.add('active');
+  };
 
-         const weekbtn = document.querySelector('.week')
-         weekbtn.addEventListener('click', () => {
-            activeButton(weekbtn, 'btn')
-            Thisweek()
-         })
+  const SubmitButton = () => {
+    const modal = document.querySelector('.modal');
+    let object = {};
+    const submit = document.querySelector('.submitBtn');
+    submit.addEventListener('click', (e) => {
+      const form = document.querySelector('.Form');
+      const title = document.querySelector('#taskTitle');
+      const descript = document.querySelector('#taskDescript');
+      const due = document.querySelector('#taskDue');
+      const priority = document.querySelector('input[type=radio][name=priority]:checked');
+      e.preventDefault();
+      if (form.checkValidity() === false) {
+        form.reportValidity();
+      } else {
+        object = {
+          title: title.value,
+          description: descript.value,
+          dueDate: due.value,
+          priority: priority.value,
+        };
+        set('task', object);
+        title.value = '';
+        descript.value = '';
+        due.value = '';
+        modal.classList.remove('show');
+      }
+    });
+  };
 
-         const taskbtn = document.querySelector('.taskbtn')
-         taskbtn.addEventListener('click', () => {
-            activeButton(taskbtn, 'modalbtn')
-            Task()
-            PriorityButton()
-            SubmitButton()
-         })
+  const PriorityButton = () => {
+    const PriorityActive = (element) => {
+      if (element.classList.contains('priorActive')) return;
+      const priorityBtns = document.querySelectorAll('.priorbtn');
+      Array.from(priorityBtns).forEach((button) => {
+        button.classList.remove('priorActive');
+      });
+      element.classList.add('priorActive');
+    };
 
-         const projbtn = document.querySelector('.projbtn')
-         projbtn.addEventListener('click', () => {
-            activeButton(projbtn, 'modalbtn')
-         })
-    }
+    const lowBtn = document.querySelector('.low');
+    lowBtn.addEventListener('click', () => {
+      PriorityActive(lowBtn);
+    });
 
-    const OpenCloseModal = () => {
-        const addbtn = document.querySelector('.addbtn')
-        const modal = document.querySelector('.modal')
-        addbtn.addEventListener('click', () => {
-            modal.classList.add('show')
-        })
-    }
+    const medBtn = document.querySelector('.medium');
+    medBtn.addEventListener('click', () => {
+      PriorityActive(medBtn);
+    });
 
-    const HideModal = () => {
-        const closebtn = document.querySelector('.modalClose')
-        const modal = document.querySelector('.modal')
-        closebtn.addEventListener('click', () => {
-            modal.classList.remove('show')
-        })
-    }
+    const highBtn = document.querySelector('.high');
+    highBtn.addEventListener('click', () => {
+      PriorityActive(highBtn);
+    });
+  };
 
-    const PriorityButton = () => {
-        const PriorityActive = (element) => {
-            if(element.classList.contains('priorActive')) return
-            const priorityBtns = document.querySelectorAll('.priorbtn')
-            Array.from(priorityBtns).forEach((button) => {
-                button.classList.remove('priorActive')
-            })
-            element.classList.add('priorActive')
-        }
+  const sideBarButton = () => {
+    const homebtn = document.querySelector('.home');
+    homebtn.addEventListener('click', () => {
+      activeButton(homebtn, 'btn');
+      Home();
+      loadTask('task');
+    });
 
-        const low = document.querySelector('#low')
-        const lowBtn = document.querySelector('.low')
-        lowBtn.addEventListener('click', () => {
-            PriorityActive(lowBtn)
-            console.log(low.checked)
-        })
+    const todaybtn = document.querySelector('.today');
+    todaybtn.addEventListener('click', () => {
+      activeButton(todaybtn, 'btn');
+      Today();
+    });
 
-        const med = document.querySelector('#medium')
-        const medBtn = document.querySelector('.medium')
-        medBtn.addEventListener('click', () => {
-            PriorityActive(medBtn)
-            console.log(med.checked)
-        })
+    const weekbtn = document.querySelector('.week');
+    weekbtn.addEventListener('click', () => {
+      activeButton(weekbtn, 'btn');
+      Thisweek();
+    });
 
-        const high = document.querySelector('#high')
-        const highBtn = document.querySelector('.high')
-        highBtn.addEventListener('click', () => {
-            PriorityActive(highBtn)
-            console.log(high.checked)
-        })
-    }
+    const taskbtn = document.querySelector('.taskbtn');
+    taskbtn.addEventListener('click', () => {
+      activeButton(taskbtn, 'modalbtn');
+      Task();
+      PriorityButton();
+      SubmitButton();
+    });
 
-    const SubmitButton = () => {
-        const form = document.querySelector('.Form')
-        const submit = document.querySelector('.submitBtn')
-        const title = document.querySelector('#taskTitle')
-        const descript = document.querySelector('#taskDescript')
-        const due = document.querySelector('#taskDue')
+    const projbtn = document.querySelector('.projbtn');
+    projbtn.addEventListener('click', () => {
+      activeButton(projbtn, 'modalbtn');
+    });
+  };
 
-        submit.addEventListener('click', (e) => {
-            e.preventDefault()
-            if(form.checkValidity() == false) {
-                form.reportValidity()
-                low.reportValidity()
-            }
-            else {
-                console.log(title.value)
-                console.log(descript.value)
-                console.log(due.value)
-            }
-        
-        })
-    }
+  const OpenCloseModal = () => {
+    const addbtn = document.querySelector('.addbtn');
+    const modal = document.querySelector('.modal');
+    addbtn.addEventListener('click', () => {
+      modal.classList.add('show');
+    });
+  };
 
-    sideBarButton()
-    OpenCloseModal()
-    HideModal()
-    
-})()
+  const HideModal = () => {
+    const closebtn = document.querySelector('.modalClose');
+    const modal = document.querySelector('.modal');
+    closebtn.addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+  };
+
+  const Homepage = () => {
+    const homebtn = document.querySelector('.home');
+    activeButton(homebtn, 'btn');
+    Home();
+    loadTask('task');
+  };
+
+  const ShowMenu = () => {
+    const menu = document.querySelector('.toggle-menu');
+    const sidebar = document.querySelector('.sidebar');
+
+    menu.addEventListener('touchend', () => {
+      sidebar.classList.toggle('showMenu');
+      menu.classList.toggle('change');
+    });
+  };
+  ShowMenu();
+  sideBarButton();
+  OpenCloseModal();
+  HideModal();
+  Homepage();
+})();
