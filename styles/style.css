@@ -42,9 +42,16 @@ body {
   justify-content: space-between;
 }
 .container .header .headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 10px;
   color: #e8e8e8;
   font-family: PoppinsBold, sans-serif;
+}
+.container .header .headerTitle img {
+  filter: invert(100%) sepia(0%) saturate(194%) hue-rotate(55deg) brightness(112%) contrast(82%);
+  width: 40px;
 }
 .container .header .toggle-menu {
   margin-right: 10px;
