@@ -47,9 +47,16 @@ body {
         align-items: center;
         justify-content: space-between;
         .headerTitle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px;
             color: $PrimaryColor;
             font-family: PoppinsBold, sans-serif;
+            img {
+                filter: invert(100%) sepia(0%) saturate(194%) hue-rotate(55deg) brightness(112%) contrast(82%);
+                width: 40px;
+            }
         }
         .toggle-menu {
             margin-right: 10px;
