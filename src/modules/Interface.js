@@ -1,14 +1,36 @@
 const Interface = () => {
+  const Header = (text) => {
+    const parent = document.createElement('div');
+    parent.className = 'contentHeader';
+    const title = document.createElement('h1');
+    title.textContent = text;
+
+    const legend = document.createElement('div');
+    const labelCreate = (arg) => {
+      const label = document.createElement('label');
+      label.className = `legend ${arg}`;
+      const p = document.createElement('p');
+      p.textContent = arg;
+
+      legend.appendChild(label);
+      legend.appendChild(p);
+    };
+
+    labelCreate('Low');
+    labelCreate('Mid');
+    labelCreate('High');
+    parent.appendChild(title);
+    parent.appendChild(legend);
+    return parent;
+  };
+
   const Home = () => {
     const content = document.querySelector('.content');
     const TaskGrid = document.createElement('div');
     TaskGrid.className = 'TaskGrid';
     content.textContent = '';
 
-    const title = document.createElement('h1');
-    title.textContent = 'Home';
-
-    content.appendChild(title);
+    content.appendChild(Header('Home'));
     content.appendChild(TaskGrid);
   };
 
@@ -17,9 +39,8 @@ const Interface = () => {
     const TaskGrid = document.createElement('div');
     TaskGrid.className = 'TaskGrid';
     content.textContent = '';
-    const title = document.createElement('h1');
-    title.textContent = 'Today';
-    content.appendChild(title);
+
+    content.appendChild(Header('Today'));
     content.appendChild(TaskGrid);
   };
 
@@ -28,9 +49,8 @@ const Interface = () => {
     const TaskGrid = document.createElement('div');
     TaskGrid.className = 'TaskGrid';
     content.textContent = '';
-    const title = document.createElement('h1');
-    title.textContent = 'This week';
-    content.appendChild(title);
+
+    content.appendChild(Header('This week'));
     content.appendChild(TaskGrid);
   };
 
