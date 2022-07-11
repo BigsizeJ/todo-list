@@ -53,10 +53,6 @@ body {
             padding: 10px;
             color: $PrimaryColor;
             font-family: PoppinsBold, sans-serif;
-            img {
-                filter: invert(100%) sepia(0%) saturate(194%) hue-rotate(55deg) brightness(112%) contrast(82%);
-                width: 40px;
-            }
         }
         .toggle-menu {
             margin-right: 10px;
@@ -74,7 +70,10 @@ body {
                 border-radius: 10px;
             }
         }
-    
+    }
+
+    .logo {
+        width: 40px;
     }
 
     .sidebar {
@@ -98,6 +97,7 @@ body {
         right: 0;
         width: 50%;
         height: 100%;
+        
         .btn {
             font-size: 1.20rem;
         }
@@ -114,16 +114,17 @@ body {
             top: 0;
             margin: auto;
             position: absolute;
+            
         }
         .hide {
             display: none;
         }
         .rotate {
-            transition: .5s ease;
+            transition: .3s ease;
             transform: rotate(-45deg);
         }
         .rotate2 {
-            transition: .5s ease;
+            transition: .3s ease;
             transform: rotate(45deg);
         }
     }
@@ -178,9 +179,36 @@ body {
         grid-template-rows: min-content auto;
         padding: 20px 50px;
         gap: 20px;
-        h1 {
-            font-size: 1.50rem;
-            font-family: PoppinsBold;
+        .contentHeader {
+            display: flex;
+            justify-content: space-between;
+            h1 {
+                font-size: 1.50rem;
+                font-family: PoppinsBold;
+            }
+            div {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                justify-content: flex-end;
+        
+                height: auto;
+                .legend {
+                    width: 10px;
+                    height: 50%;
+                  
+                }
+                .Low {
+                    background-color: yellow;
+                }
+                .Mid {
+                    background-color: orange;
+                }
+                .High {
+                    background-color: red;
+                }
+            }
+
         }
         .TaskGrid {
             width: 100%;
@@ -198,8 +226,17 @@ body {
                 padding: 5px;
                 background: $PrimaryColor;
                 border: 1px solid $HeaderColor;
-                border-left: 5px inset rgb(72, 95, 73);
+                border-left: 8px inset dodgerblue;
                 width: 100%;
+                .holder {
+                    margin-left: -5px;
+                    gap: 5px;
+                    input[type=checkbox] {
+                        border-radius: 50%;
+                    }
+                    display: flex;
+                    align-items: center;
+                }
             }
         }
     }
@@ -364,7 +401,13 @@ body {
             }
         }
         .sidebar {
+            width: 50%;
+            height: 100%;
+            transition: .3s ease;
             display: none;
+            position: absolute;
+            right: -1000px;
+
         }
         .content {
             gap: 10px;
