@@ -76,11 +76,17 @@ body {
   gap: 10px;
   padding: 10px;
 }
-.container .sidebar .projectLabel {
+.container .sidebar .project .projectLabel {
   margin: 0;
   font-size: 1.5rem;
   padding: 5px;
   font-family: PoppinsBold;
+}
+.container .sidebar .project .project-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 350px;
 }
 .container .sidebar.showMenu {
   display: flex;
@@ -182,13 +188,13 @@ body {
   height: 50%;
 }
 .container .content .contentHeader div .Low {
-  background-color: yellow;
+  background-color: #00ff00;
 }
 .container .content .contentHeader div .Mid {
-  background-color: orange;
+  background-color: #ffff00;
 }
 .container .content .contentHeader div .High {
-  background-color: red;
+  background-color: #ffa500;
 }
 .container .content .TaskGrid {
   width: 100%;
@@ -207,7 +213,6 @@ body {
   padding: 5px;
   background: #e8e8e8;
   border: 1px solid dodgerblue;
-  border-left: 8px inset dodgerblue;
   width: 100%;
 }
 .container .content .TaskGrid div .holder {
@@ -290,14 +295,14 @@ body {
   flex-direction: column;
   position: relative;
 }
-.container .Form .taskTitle, .container .Form .taskDescript {
+.container .Form .Title, .container .Form .taskDescript {
   border: none;
   font-family: Poppins, sans-serif;
   padding: 5px;
   background-color: #e8e8e8;
   font-size: 13px;
 }
-.container .Form .taskTitle:focus, .container .Form .taskDescript:focus {
+.container .Form .Title:focus, .container .Form .taskDescript:focus {
   outline: 1px solid #333;
 }
 .container .Form .taskDescript {
@@ -346,7 +351,10 @@ body {
   color: #e8e8e8;
   background: dodgerblue;
 }
-.container .Form .submitBtn {
+.container .Form .submitBtn, .container .Form .submitBtnProj {
+  position: absolute;
+  width: 96%;
+  bottom: 12px;
   margin-top: 5px;
   text-align: center;
   border: none;
@@ -356,7 +364,7 @@ body {
   background-color: dodgerblue;
   color: #e8e8e8;
 }
-.container .Form .submitBtn:hover {
+.container .Form .submitBtn:hover, .container .Form .submitBtnProj:hover {
   cursor: pointer;
   background-color: rgba(30, 144, 255, 0.8);
 }
