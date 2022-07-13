@@ -38,7 +38,6 @@ body {
     display: grid;
     grid-template-rows: min-content 2fr;
     grid-template-columns: 1fr 4fr;
-
     .header {
         width: 100%;
         grid-column: 1/-1;
@@ -83,11 +82,19 @@ body {
         flex-direction: column;
         gap: 10px;
         padding: 10px;
-        .projectLabel {
-            margin: 0;
-            font-size: 1.50rem;
-            padding: 5px;
-            font-family: PoppinsBold;
+        .project {
+            .projectLabel {
+                margin: 0;
+                font-size: 1.50rem;
+                padding: 5px;
+                font-family: PoppinsBold;
+            }
+            .project-list {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 350px;
+            }
         }
     }
 
@@ -199,13 +206,13 @@ body {
                   
                 }
                 .Low {
-                    background-color: yellow;
+                    background-color: #00ff00;
                 }
                 .Mid {
-                    background-color: orange;
+                    background-color: #ffff00;
                 }
                 .High {
-                    background-color: red;
+                    background-color: #ffa500;
                 }
             }
 
@@ -226,7 +233,6 @@ body {
                 padding: 5px;
                 background: $PrimaryColor;
                 border: 1px solid $HeaderColor;
-                border-left: 8px inset dodgerblue;
                 width: 100%;
                 .holder {
                     margin-left: -5px;
@@ -312,7 +318,7 @@ body {
         display: flex;
         flex-direction: column;
         position: relative;
-        .taskTitle, .taskDescript {
+        .Title, .taskDescript {
             border: none;
             font-family: Poppins, sans-serif;
             padding: 5px;
@@ -369,7 +375,10 @@ body {
                 background: dodgerblue;
             }
         }
-        .submitBtn {
+        .submitBtn, .submitBtnProj {
+            position: absolute;
+            width: 96%;
+            bottom: 12px;
             margin-top: 5px;
             text-align: center;
             border: none;
@@ -384,7 +393,6 @@ body {
             }
         }
     }
-
     .show {
         display: flex;
     }

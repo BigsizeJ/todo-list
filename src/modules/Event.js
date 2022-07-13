@@ -1,149 +1,18 @@
 import {
-  format, parseISO, isToday, isThisWeek,
+  format, parseISO,
 } from 'date-fns';
 import Interface from './Interface';
 import Storage from './Storage';
+import Project from './Project';
+import Task from './Task';
 
 const Event = (() => {
   const {
-    Home, Today, Thisweek, Task,
+    Home, Today, Thisweek, TaskInterface, ProjectModal, ProjectContent,
   } = Interface();
-  const { set, get } = Storage();
-
-  const loadTask = (key) => {
-    const tasks = get(key);
-    const TaskGrid = document.querySelector('.TaskGrid');
-    if (tasks === null) return;
-    Array.from(tasks).forEach((task) => {
-      const div = document.createElement('div');
-      const holder = document.createElement('label');
-      const title = document.createElement('p');
-      const date = document.createElement('p');
-      const check = document.createElement('input');
-      const checkLabel = document.createElement('label');
-      check.id = 'check';
-      checkLabel.htmlFor = 'check';
-      checkLabel.className = 'checkbtn';
-      title.textContent = task.title;
-      date.textContent = task.dueDate;
-      check.type = 'checkbox';
-      holder.className = 'holder';
-
-      holder.appendChild(check);
-      holder.appendChild(title);
-
-      switch (task.priority) {
-        case 'low':
-          div.style.borderLeftColor = 'yellow';
-          break;
-        case 'medium':
-          div.style.borderLeftColor = 'orange';
-          break;
-        case 'high':
-          div.style.borderLeftColor = 'red';
-          break;
-        default:
-          break;
-      }
-      div.appendChild(holder);
-      div.appendChild(date);
-      TaskGrid.append(div);
-    });
-  };
-
-  const LoadTodayTask = (key) => {
-    const tasks = get(key);
-    const TaskGrid = document.querySelector('.TaskGrid');
-    if (tasks === null) return;
-
-    Array.from(tasks).forEach((task) => {
-      const arr = task.dueDate.split('-');
-      const due = `${arr[2]}-${arr[0]}-${arr[1]}`;
-
-      if (isToday(parseISO(due))) {
-        const div = document.createElement('div');
-        const holder = document.createElement('label');
-        const title = document.createElement('p');
-        const date = document.createElement('p');
-        const check = document.createElement('input');
-        const checkLabel = document.createElement('label');
-        check.id = 'check';
-        checkLabel.htmlFor = 'check';
-        checkLabel.className = 'checkbtn';
-        title.textContent = task.title;
-        date.textContent = task.dueDate;
-        check.type = 'checkbox';
-        holder.className = 'holder';
-
-        holder.appendChild(check);
-        holder.appendChild(title);
-
-        switch (task.priority) {
-          case 'low':
-            div.style.borderLeftColor = 'yellow';
-            break;
-          case 'medium':
-            div.style.borderLeftColor = 'orange';
-            break;
-          case 'high':
-            div.style.borderLeftColor = 'red';
-            break;
-          default:
-            break;
-        }
-        div.appendChild(holder);
-        div.appendChild(date);
-        TaskGrid.append(div);
-      }
-    });
-  };
-
-  const LoadThisWeekTask = (key) => {
-    const tasks = get(key);
-    const TaskGrid = document.querySelector('.TaskGrid');
-    if (tasks === null) return;
-
-    Array.from(tasks).forEach((task) => {
-      const arr = task.dueDate.split('-');
-      const due = `${arr[2]}-${arr[0]}-${arr[1]}`;
-
-      if (isThisWeek(parseISO(due))) {
-        const div = document.createElement('div');
-        const holder = document.createElement('label');
-        const title = document.createElement('p');
-        const date = document.createElement('p');
-        const check = document.createElement('input');
-        const checkLabel = document.createElement('label');
-        check.id = 'check';
-        checkLabel.htmlFor = 'check';
-        checkLabel.className = 'checkbtn';
-        title.textContent = task.title;
-        date.textContent = task.dueDate;
-        check.type = 'checkbox';
-        holder.className = 'holder';
-
-        holder.appendChild(check);
-        holder.appendChild(title);
-
-        switch (task.priority) {
-          case 'low':
-            div.style.borderLeftColor = 'yellow';
-            break;
-          case 'medium':
-            div.style.borderLeftColor = 'orange';
-            break;
-          case 'high':
-            div.style.borderLeftColor = 'red';
-            break;
-          default:
-            break;
-        }
-        div.appendChild(holder);
-        div.appendChild(date);
-        TaskGrid.append(div);
-      }
-    });
-  };
+  const { set } = Storage();
+  const { SubmitProject, loadProject } = Project();
+  const { filterTask } = Task();
 
   const activeButton = (element, className) => {
     if (element.classList.contains('active')) return;
@@ -159,7 +28,6 @@ const Event = (() => {
     const submit = document.querySelector('.submitBtn');
     const home = document.querySelector('.home');
     const today = document.querySelector('.today');
-    const week = document.querySelector('.week');
 
     let object = {};
     submit.addEventListener('click', (e) => {
@@ -186,13 +54,13 @@ const Event = (() => {
         modal.classList.remove('show');
         if (home.classList.contains('active')) {
           Home();
-          loadTask('task');
+          filterTask('task', 'all');
         } else if (today.classList.contains('active')) {
           Today();
-          LoadTodayTask('task');
+          filterTask('task', 'today');
         } else {
           Thisweek();
-          LoadThisWeekTask('task');
+          filterTask('task', 'thisweek');
         }
       }
     });
@@ -229,27 +97,27 @@ const Event = (() => {
     homebtn.addEventListener('click', () => {
       activeButton(homebtn, 'btn');
       Home();
-      loadTask('task');
+      filterTask('task', 'all');
     });
 
     const todaybtn = document.querySelector('.today');
     todaybtn.addEventListener('click', () => {
       activeButton(todaybtn, 'btn');
       Today();
-      LoadTodayTask('task');
+      filterTask('task', 'today');
     });
 
     const weekbtn = document.querySelector('.week');
     weekbtn.addEventListener('click', () => {
       activeButton(weekbtn, 'btn');
       Thisweek();
-      LoadThisWeekTask('task');
+      filterTask('task', 'thisweek');
     });
 
     const taskbtn = document.querySelector('.taskbtn');
     taskbtn.addEventListener('click', () => {
       activeButton(taskbtn, 'modalbtn');
-      Task();
+      TaskInterface();
       PriorityButton();
       SubmitButton();
     });
@@ -257,6 +125,16 @@ const Event = (() => {
     const projbtn = document.querySelector('.projbtn');
     projbtn.addEventListener('click', () => {
       activeButton(projbtn, 'modalbtn');
+      ProjectModal();
+      SubmitProject();
+    });
+
+    const sidebarProject = document.querySelector('.sidebar');
+    sidebarProject.addEventListener('click', (e) => {
+      if (e.target.classList.contains('project')) {
+        activeButton(e.target, 'btn');
+        ProjectContent(e.target.innerText);
+      }
     });
   };
 
@@ -280,7 +158,8 @@ const Event = (() => {
     const homebtn = document.querySelector('.home');
     activeButton(homebtn, 'btn');
     Home();
-    loadTask('task');
+    filterTask('task', 'all');
+    loadProject();
   };
 
   const ShowMenu = () => {
@@ -292,6 +171,7 @@ const Event = (() => {
       menu.classList.toggle('change');
     });
   };
+
   ShowMenu();
   sideBarButton();
   OpenCloseModal();

@@ -54,7 +54,7 @@ const Interface = () => {
     content.appendChild(TaskGrid);
   };
 
-  const Task = () => {
+  const TaskInterface = () => {
     const modalContent = document.querySelector('.modalContent');
     modalContent.textContent = '';
 
@@ -63,7 +63,7 @@ const Interface = () => {
 
     const Title = document.createElement('input');
     Title.type = 'text';
-    Title.className = 'taskTitle';
+    Title.className = 'Title';
     Title.id = 'taskTitle';
     Title.required = true;
     Title.placeholder = 'Task title (e.g. Grocery)';
@@ -141,8 +141,41 @@ const Interface = () => {
     modalContent.appendChild(Form);
   };
 
+  const ProjectModal = () => {
+    const modalContent = document.querySelector('.modalContent');
+    modalContent.textContent = '';
+
+    const Form = document.createElement('form');
+    Form.className = 'Form';
+
+    const title = document.createElement('input');
+    title.type = 'text';
+    title.className = 'Title ProjectTitle';
+    title.placeholder = 'Project title (e.g. Workout)';
+    title.required = true;
+
+    const submitBtn = document.createElement('input');
+    submitBtn.type = 'submit';
+    submitBtn.className = 'submitBtnProj';
+    submitBtn.value = 'Add';
+
+    Form.appendChild(title);
+    Form.appendChild(submitBtn);
+    modalContent.appendChild(Form);
+  };
+
+  const ProjectContent = (title) => {
+    const content = document.querySelector('.content');
+    const TaskGrid = document.createElement('div');
+    TaskGrid.className = 'TaskGrid';
+    content.textContent = '';
+
+    content.appendChild(Header(title));
+    content.appendChild(TaskGrid);
+  };
+
   return {
-    Home, Today, Thisweek, Task,
+    Home, Today, Thisweek, TaskInterface, ProjectModal, ProjectContent,
   };
 };
 
