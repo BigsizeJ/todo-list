@@ -18,7 +18,10 @@ const Storage = () => {
     storage.setItem(key, JSON.stringify(array));
   };
 
-  return { set, get };
+  const setClear = (key, value) => {
+    storage.setItem(key, JSON.stringify(value));
+  };
+  return { set, get, setClear };
 };
 
 export default Storage;

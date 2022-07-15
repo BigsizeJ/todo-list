@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   format, parseISO,
 } from 'date-fns';
@@ -6,13 +7,15 @@ import Storage from './Storage';
 import Project from './Project';
 import Task from './Task';
 
+// eslint-disable-next-line no-unused-vars
 const Event = (() => {
   const {
     Home, Today, Thisweek, TaskInterface, ProjectModal, ProjectContent,
   } = Interface();
-  const { set } = Storage();
+  const { set, get, setClear } = Storage();
   const { SubmitProject, loadProject } = Project();
-  const { filterTask } = Task();
+  const { filterTask, ProjectTask } = Task();
+  let activeProject;
 
   const activeButton = (element, className) => {
     if (element.classList.contains('active')) return;
@@ -21,6 +24,10 @@ const Event = (() => {
       button.classList.remove('active');
     });
     element.classList.add('active');
+    if (className === 'modalbtn') return;
+    if (element.classList.contains('project')) {
+      activeProject = element.innerText;
+    } else { activeProject = null; }
   };
 
   const SubmitButton = () => {
@@ -40,6 +47,26 @@ const Event = (() => {
       e.preventDefault();
       if (form.checkValidity() === false) {
         form.reportValidity();
+      } else if (activeProject !== null) {
+        const projects = get('Project');
+        Array.from(projects).forEach((project, index) => {
+          if (project.name === activeProject) {
+            projects.splice(index, 1);
+            console.log(projects);
+            object = {
+              title: title.value,
+              description: descript.value,
+              dueDate: format(parseISO(due.value), 'MM-dd-yyyy'),
+              priority: priority.value,
+            };
+            const item = project;
+            item.task.unshift(object);
+            setClear('Project', projects);
+            set('Project', item);
+            ProjectContent(activeProject);
+            ProjectTask('Project', activeProject);
+          }
+        });
       } else {
         object = {
           title: title.value,
@@ -47,22 +74,22 @@ const Event = (() => {
           dueDate: format(parseISO(due.value), 'MM-dd-yyyy'),
           priority: priority.value,
         };
-        set('task', object);
-        title.value = '';
-        descript.value = '';
-        due.value = '';
-        modal.classList.remove('show');
+        set('Task', object);
         if (home.classList.contains('active')) {
           Home();
-          filterTask('task', 'all');
+          filterTask('Task', 'all');
         } else if (today.classList.contains('active')) {
           Today();
-          filterTask('task', 'today');
+          filterTask('Task', 'today');
         } else {
           Thisweek();
-          filterTask('task', 'thisweek');
+          filterTask('Task', 'thisweek');
         }
       }
+      title.value = '';
+      descript.value = '';
+      due.value = '';
+      modal.classList.remove('show');
     });
   };
 
@@ -97,21 +124,21 @@ const Event = (() => {
     homebtn.addEventListener('click', () => {
       activeButton(homebtn, 'btn');
       Home();
-      filterTask('task', 'all');
+      filterTask('Task', 'all');
     });
 
     const todaybtn = document.querySelector('.today');
     todaybtn.addEventListener('click', () => {
       activeButton(todaybtn, 'btn');
       Today();
-      filterTask('task', 'today');
+      filterTask('Task', 'today');
     });
 
     const weekbtn = document.querySelector('.week');
     weekbtn.addEventListener('click', () => {
       activeButton(weekbtn, 'btn');
       Thisweek();
-      filterTask('task', 'thisweek');
+      filterTask('Task', 'thisweek');
     });
 
     const taskbtn = document.querySelector('.taskbtn');
@@ -134,6 +161,7 @@ const Event = (() => {
       if (e.target.classList.contains('project')) {
         activeButton(e.target, 'btn');
         ProjectContent(e.target.innerText);
+        ProjectTask('Project', activeProject);
       }
     });
   };
@@ -158,7 +186,7 @@ const Event = (() => {
     const homebtn = document.querySelector('.home');
     activeButton(homebtn, 'btn');
     Home();
-    filterTask('task', 'all');
+    filterTask('Task', 'all');
     loadProject();
   };
 

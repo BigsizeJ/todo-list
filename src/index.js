@@ -1,1 +1,1 @@
-import './modules/Event'
+import './modules/Event';

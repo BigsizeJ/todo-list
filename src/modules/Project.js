@@ -15,6 +15,7 @@ const Project = () => {
     const projects = get('Project');
     const projectContainer = document.querySelector('.project-list');
     projectContainer.textContent = '';
+    if (projects === null) return;
     Array.from(projects).forEach((project) => {
       addProjectBtn(project.name);
     });
@@ -33,7 +34,7 @@ const Project = () => {
       } else {
         const obj = {
           name: title.value,
-          task: {},
+          task: [],
         };
         set('Project', obj);
         title.value = '';

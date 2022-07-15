@@ -1,20 +1,48 @@
+/* eslint-disable no-unneeded-ternary */
 import { parseISO, isToday, isThisWeek } from 'date-fns';
 import Storage from './Storage';
 
 const Task = () => {
-  const { get } = Storage();
+  const { get, setClear } = Storage();
 
-  const loadTask = (task) => {
+  const loadTask = (task, key, projectname) => {
     const TaskGrid = document.querySelector('.TaskGrid');
     const div = document.createElement('div');
     const holder = document.createElement('label');
     const title = document.createElement('p');
     const date = document.createElement('p');
     const check = document.createElement('input');
-    const checkLabel = document.createElement('label');
+
     check.id = 'check';
-    checkLabel.htmlFor = 'check';
-    checkLabel.className = 'checkbtn';
+    if (projectname !== null) {
+      const projects = get(key);
+      if (projects === null) return;
+      check.addEventListener('click', () => {
+        Array.from(projects).forEach((project) => {
+          if (project.name === projectname) {
+            Array.from(project.task).forEach((item, index) => {
+              if (item.title === task.title) {
+                project.task.splice(index, 1);
+                div.remove();
+                setClear(key, projects);
+              }
+            });
+          }
+        });
+      });
+    } else {
+      check.addEventListener('click', () => {
+        const list = get(key);
+        Array.from(list).forEach((item, index) => {
+          if (item.title === task.title) {
+            list.splice(index, 1);
+            div.remove();
+            setClear(key, list);
+          }
+        });
+      });
+    }
+
     title.textContent = task.title;
     date.textContent = task.dueDate;
     check.type = 'checkbox';
@@ -49,18 +77,30 @@ const Task = () => {
       const arr = task.dueDate.split('-');
       const due = parseISO(`${arr[2]}-${arr[0]}-${arr[1]}`);
       if (date === 'today') {
-        if (isToday(due)) loadTask(task);
+        if (isToday(due)) loadTask(task, key, null);
       }
       if (date === 'thisweek') {
-        if (isThisWeek(due)) loadTask(task);
+        if (isThisWeek(due)) loadTask(task, key, null);
       }
       if (date === 'all') {
-        loadTask(task);
+        loadTask(task, key, null);
       }
     });
   };
 
-  return { filterTask };
+  const ProjectTask = (key, name) => {
+    const projects = get(key);
+    if (projects === null) return;
+    Array.from(projects).forEach((project) => {
+      if (project.name === name) {
+        Array.from(project.task).forEach((task) => {
+          loadTask(task, key, name);
+        });
+      }
+    });
+  };
+
+  return { filterTask, ProjectTask };
 };
 
 export default Task;
